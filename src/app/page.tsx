@@ -1,8 +1,27 @@
+'use client'
 import Image from "next/image";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase/config";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+
+
 
 export default function Home() {
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/sign-in");
+  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <button
+        onClick={handleLogout}
+        className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none"
+      >
+        Log out
+      </button>
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           Get started by editing&nbsp;
